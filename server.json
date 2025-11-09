@@ -1,0 +1,92 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.VictoriaMetrics-Community/mcp-vmanomaly",
+  "description": "MCP Server for vmanomaly - VictoriaMetrics anomaly detection",
+  "status": "active",
+  "repository": {
+    "url": "https://github.com/VictoriaMetrics-Community/mcp-vmanomaly",
+    "source": "github"
+  },
+  "version": "${VERSION}",
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/victoriametrics-community/mcp-vmanomaly:${VERSION}",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "VMANOMALY_ENDPOINT",
+          "description": "vmanomaly server endpoint URL (e.g., http://localhost:8490)",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "VMANOMALY_BEARER_TOKEN",
+          "description": "Bearer token for authenticating with vmanomaly API",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "VMANOMALY_HEADERS",
+          "description": "Custom HTTP headers for vmanomaly requests (comma-separated key=value pairs, e.g., X-Custom-Header=value1,X-Another=value2)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "MCP_SERVER_MODE",
+          "description": "MCP server mode: stdio (default), sse, or http",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "MCP_LISTEN_ADDR",
+          "description": "Listen address for SSE/HTTP modes (default: localhost:8080)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "MCP_LOG_LEVEL",
+          "description": "Log level: debug, info (default), warn, or error",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "MCP_LOG_FILE",
+          "description": "Log file path (empty = stderr)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "MCP_DISABLED_TOOLS",
+          "description": "Comma-separated list of tools to disable",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "MCP_HEARTBEAT_INTERVAL",
+          "description": "Heartbeat interval for HTTP mode (default: 30s)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "MCP_DISABLE_RESOURCES",
+          "description": "Disable embedded documentation resources",
+          "isRequired": false,
+          "format": "boolean",
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+version: 2
+project_name: mcp-vmanomaly
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - "386"
+    main: ./cmd/mcp-vmanomaly/main.go
+    binary: mcp-vmanomaly
+    ldflags:
+      - -X main.version={{.Version}} -X main.date={{ .CommitDate }}
+
+archives:
+  - formats: [tar.gz]
+    # this name template makes the OS and Arch compatible with the results of `uname`.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  version_template: "{{ .Tag }}-next"
+
+changelog:
+  sort: asc
+
+dockers_v2:
+  - images:
+      - "ghcr.io/victoriametrics-community/mcp-vmanomaly"
+    tags:
+      - latest
+      - "{{ .Version }}"
+      - "v{{ .Version }}"
+    dockerfile: Dockerfile.goreleaser
+    labels:
+      "org.opencontainers.image.title": "{{.ProjectName}}"
+      "org.opencontainers.image.description": "MCP Server for vmanomaly - VictoriaMetrics anomaly detection"
+      "org.opencontainers.image.url": "{{.GitURL}}"
+      "org.opencontainers.image.source": "{{.GitURL}}"
+      "org.opencontainers.image.version": "{{.Version}}"
+      "org.opencontainers.image.created": "{{.Date}}"
+      "org.opencontainers.image.revision": "{{.FullCommit}}"
+      "org.opencontainers.image.licenses": "Apache-2.0"
+      "io.modelcontextprotocol.server.name": "io.github.VictoriaMetrics-Community/mcp-vmanomaly"
+    annotations:
+      "project": "{{.ProjectName}}"
+    platforms:
+      - linux/amd64
+      - linux/arm64
