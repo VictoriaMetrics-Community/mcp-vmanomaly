@@ -21,7 +21,7 @@ go.work
 /bin/
 /dist/
 /build/
-mcp-vmanomaly
+/mcp-vmanomaly
 
 # IDE
 .idea/

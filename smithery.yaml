@@ -1,0 +1,37 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: 'mcp-vmanomaly',
+      args: [],
+      env: {
+        VMANOMALY_ENDPOINT: config.vmanomalyEndpoint,
+        ...(config.vmanomalyBearerToken ? {VMANOMALY_BEARER_TOKEN: config.vmanomalyBearerToken} : {}),
+        ...(config.vmanomalyHeaders ? {VMANOMALY_HEADERS: config.vmanomalyHeaders} : {}),
+      }
+    })
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - vmanomalyEndpoint
+    properties:
+      vmanomalyEndpoint:
+        type: string
+        description: vmanomaly server endpoint URL
+      vmanomalyBearerToken:
+        type: string
+        default: ""
+        description: Bearer token for authentication (optional)
+      vmanomalyHeaders:
+        type: string
+        default: ""
+        description: Custom HTTP headers as comma-separated key=value pairs (optional)
+  exampleConfig:
+    vmanomalyEndpoint: http://localhost:8490
+    vmanomalyBearerToken: <YOUR_TOKEN_HERE>
+    vmanomalyHeaders: X-Custom-Header=value1,X-Another=value2

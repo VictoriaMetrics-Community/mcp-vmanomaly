@@ -5,40 +5,40 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"mcp-vmanomaly/internal/vmanomaly"
+
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
-	"mcp-vmanomaly/internal/vmanomaly"
 )
 
-// RegisterTools registers all MCP tools with the server
 func RegisterTools(s *server.MCPServer, client *vmanomaly.Client) {
-	// Register health check tool
-	healthTool := mcp.NewTool("health_check",
+	healthTool := mcp.NewTool("vmanomaly_health_check",
 		mcp.WithDescription("Check the health status of the vmanomaly server"),
 	)
+	s.AddTool(healthTool, handleHealthCheck(client))
 
-	s.AddTool(healthTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		// Call vmanomaly health endpoint
+	RegisterModelTools(s, client)
+	RegisterConfigTools(s, client)
+	RegisterInfoTools(s, client)
+	RegisterCompatibilityTools(s, client)
+	RegisterAlertTools(s, client)
+	RegisterDocsTool(s)
+}
+
+func handleHealthCheck(client *vmanomaly.Client) server.ToolHandlerFunc {
+	return func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		health, err := client.GetHealth(ctx)
 		if err != nil {
 			return mcp.NewToolResultError(fmt.Sprintf("Health check failed: %v", err)), nil
 		}
 
-		// Format response
 		responseJSON, err := json.MarshalIndent(health, "", "  ")
 		if err != nil {
 			return mcp.NewToolResultError(fmt.Sprintf("Failed to format response: %v", err)), nil
 		}
 
 		return mcp.NewToolResultText(string(responseJSON)), nil
-	})
-
-	// TODO: Add more tools here based on vmanomaly API capabilities:
-	// - list_models: List available anomaly detection models
-	// - run_detection: Trigger anomaly detection on specified data
-	// - get_anomalies: Retrieve detected anomalies
-	// - get_model_metrics: Get metrics for a specific model
-	// - query_logs: Query VictoriaLogs for anomaly-related logs
+	}
 }
 
 // Example of how to add more tools:
