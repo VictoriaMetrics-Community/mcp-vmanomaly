@@ -34,12 +34,24 @@ func RegisterModelTools(s *server.MCPServer, client *vmanomaly.Client) {
 	listModelsTool := mcp.NewTool(
 		"vmanomaly_list_models",
 		mcp.WithDescription("List all available anomaly detection model types supported by vmanomaly. Returns model names that can be used in model configurations. Use this as the first step when selecting a model, then call vmanomaly_get_model_schema to see parameters for your chosen model."),
+		mcp.WithToolAnnotation(mcp.ToolAnnotation{
+			Title:           "Vmanomaly List Models",
+			ReadOnlyHint:    ptr(true),
+			DestructiveHint: ptr(false),
+			OpenWorldHint:   ptr(false),
+		}),
 	)
 	s.AddTool(listModelsTool, handleListModels(client))
 
 	getModelSchemaTool := mcp.NewTool(
 		"vmanomaly_get_model_schema",
 		mcp.WithDescription("Get the complete JSON schema for a specific anomaly detection model type. Returns all configuration parameters, types, validation rules, default values, and descriptions. Use this after vmanomaly_list_models to understand how to configure a specific model before calling vmanomaly_validate_model_config or vmanomaly_create_detection_task."),
+		mcp.WithToolAnnotation(mcp.ToolAnnotation{
+			Title:           "Get Model Schema",
+			ReadOnlyHint:    ptr(true),
+			DestructiveHint: ptr(false),
+			OpenWorldHint:   ptr(false),
+		}),
 		mcp.WithInputSchema[GetModelSchemaArgs](),
 	)
 	s.AddTool(getModelSchemaTool, mcp.NewTypedToolHandler(handleGetModelSchema(client)))
@@ -47,6 +59,12 @@ func RegisterModelTools(s *server.MCPServer, client *vmanomaly.Client) {
 	validateModelConfigTool := mcp.NewTool(
 		"vmanomaly_validate_model_config",
 		mcp.WithDescription("Validate an anomaly detection model configuration before using it. Returns validation result with the normalized/validated configuration or detailed error messages if invalid. Use this after building your model config to catch configuration errors before creating a detection task with vmanomaly_create_detection_task."),
+		mcp.WithToolAnnotation(mcp.ToolAnnotation{
+			Title:           "Validate Model Config",
+			ReadOnlyHint:    ptr(true),
+			DestructiveHint: ptr(false),
+			OpenWorldHint:   ptr(false),
+		}),
 		mcp.WithInputSchema[ValidateModelConfigArgs](),
 	)
 	s.AddTool(validateModelConfigTool, mcp.NewTypedToolHandler(handleValidateModelConfig(client)))

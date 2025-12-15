@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"github.com/VictoriaMetrics-Community/mcp-vmanomaly/internal/vmanomaly"
 
 	"github.com/mark3labs/mcp-go/mcp"
@@ -20,12 +21,24 @@ func RegisterInfoTools(s *server.MCPServer, client *vmanomaly.Client) {
 	getBuildinfoTool := mcp.NewTool(
 		"vmanomaly_get_buildinfo",
 		mcp.WithDescription("Get vmanomaly server build information including version number, build timestamp, and Go version. Use this to verify server version, check compatibility, or troubleshoot issues by confirming which version is running."),
+		mcp.WithToolAnnotation(mcp.ToolAnnotation{
+			Title:           "Get vmanomaly Server Build Info",
+			ReadOnlyHint:    ptr(true),
+			DestructiveHint: ptr(false),
+			OpenWorldHint:   ptr(false),
+		}),
 	)
 	s.AddTool(getBuildinfoTool, handleGetBuildinfo(client))
 
 	getMetricsTool := mcp.NewTool(
 		"vmanomaly_get_metrics",
 		mcp.WithDescription("Get currently instant Prometheus-formatted self-monitoring metrics from vmanomaly server. Returns operational metrics including reader/writer performance, model execution stats, system info, and resource usage. Output is in standard Prometheus text exposition format suitable for scraping or monitoring analysis."),
+		mcp.WithToolAnnotation(mcp.ToolAnnotation{
+			Title:           "Get vmanomaly Server Self-Monitoring Metrics",
+			ReadOnlyHint:    ptr(true),
+			DestructiveHint: ptr(false),
+			OpenWorldHint:   ptr(false),
+		}),
 	)
 	s.AddTool(getMetricsTool, handleGetMetrics(client))
 }

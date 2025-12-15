@@ -30,6 +30,12 @@ func RegisterDocsTool(s *server.MCPServer) {
 	searchDocsTool := mcp.NewTool(
 		"vmanomaly_search_docs",
 		mcp.WithDescription("Search vmanomaly documentation using full-text search with fuzzy matching. Returns relevant documentation resources that can help answer questions about anomaly detection, models, configuration, and vmanomaly features. Use this when you need information about model parameters, configuration syntax, troubleshooting, or feature explanations."),
+		mcp.WithToolAnnotation(mcp.ToolAnnotation{
+			Title:           "Search vmanomaly Docs",
+			ReadOnlyHint:    ptr(true),
+			DestructiveHint: ptr(false),
+			OpenWorldHint:   ptr(false),
+		}),
 		mcp.WithInputSchema[SearchDocsArgs](),
 	)
 	s.AddTool(searchDocsTool, mcp.NewTypedToolHandler(handleSearchDocs()))
