@@ -830,7 +830,7 @@ func TestClient_GetBuildInfo(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			client, server := newTestServer(t, func(w http.ResponseWriter, r *http.Request) {
-				assertEqual(t, r.URL.Path, "/api/v1/status/buildinfo")
+				assertEqual(t, r.URL.Path, "/api/v1/server/buildinfo")
 				assertEqual(t, r.Method, http.MethodGet)
 
 				w.WriteHeader(tt.statusCode)

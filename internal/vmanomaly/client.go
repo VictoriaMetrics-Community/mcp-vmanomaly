@@ -263,7 +263,7 @@ func (c *Client) Query(ctx context.Context, req *QueryRequest) (map[string]any, 
 }
 
 func (c *Client) GetBuildInfo(ctx context.Context) (map[string]any, error) {
-	respBody, err := c.doRequest(ctx, http.MethodGet, "/api/v1/status/buildinfo", nil)
+	respBody, err := c.doRequest(ctx, http.MethodGet, "/api/v1/server/buildinfo", nil)
 	if err != nil {
 		return nil, err
 	}
