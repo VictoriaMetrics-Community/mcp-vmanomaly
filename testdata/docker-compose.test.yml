@@ -1,0 +1,38 @@
+services:
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:latest
+    ports:
+      - "8428:8428"
+    command:
+      - '--storageDataPath=/victoria-metrics-data'
+      - '--httpListenAddr=:8428'
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:8428/health"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+      start_period: 5s
+    networks:
+      - vmanomaly-test
+
+  vmanomaly:
+    image: victoriametrics/vmanomaly:latest
+    ports:
+      - "8490:8490"
+    environment:
+      - VMANOMALY_DATASOURCE_URL=http://victoriametrics:8428
+    depends_on:
+      victoriametrics:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:8490/health"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+      start_period: 10s
+    networks:
+      - vmanomaly-test
+
+networks:
+  vmanomaly-test:
+    driver: bridge
