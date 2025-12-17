@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.victoriametrics-community/mcp-vmanomaly",
+  "name": "io.github.VictoriaMetrics-Community/mcp-vmanomaly",
   "description": "MCP Server for vmanomaly - VictoriaMetrics anomaly detection",
   "status": "active",
   "repository": {
