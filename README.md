@@ -26,7 +26,7 @@ The quality of the MCP Server and its responses depends very much on the capabil
 
 ## Requirements
 
-- [vmanomaly](https://docs.victoriametrics.com/anomaly-detection/) instance with REST API access
+- [vmanomaly](https://docs.victoriametrics.com/anomaly-detection/) instance (version [1.28.3](https://docs.victoriametrics.com/anomaly-detection/changelog/#v1283)+) with REST API access
 - Go 1.24 or higher (if building from source)
 
 ## Installation
@@ -518,6 +518,7 @@ curl http://localhost:8080/metrics
 
 - [ ] Add prompts for common vmanomaly workflows (model selection, troubleshooting)
 - [ ] Grafana dashboard for MCP server monitoring
+- [ ] Add API compatibility matrix to gracefully handle version differences between MCP client and vmanomaly server (API is evolving, features may be unavailable)
 
 ## Disclaimer
 
